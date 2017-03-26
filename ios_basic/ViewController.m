@@ -16,6 +16,9 @@
 @implementation ViewController
 
 @synthesize timerView = _timerView;
+@synthesize mySwitch = _mySwitch;
+@synthesize myProgress = _myProgress;
+@synthesize slider = _slider;
 
 //当屏幕被点击是调用此函数
 //- (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
@@ -35,6 +38,9 @@
     //[self creatUI];
     [self createRectBtn];
     [self createImageBtn];
+    [self createSwitch];
+    [self createProgress];
+    [self createSlider];
     //[self createUIView];
     //[self viewCengji];
     // Do any additional setup after loading the view, typically from a nib.
@@ -115,7 +121,7 @@
     //创建圆角矩形button
     UIButton* btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     //设置按钮坐标
-    btn.frame = CGRectMake(100, 200, 160, 40);
+    btn.frame = CGRectMake(100, 100, 160, 40);
     //设置按钮内容
     [btn setTitle:@"启动定时器" forState:UIControlStateNormal];
     //选中状态时按钮内容
@@ -155,7 +161,7 @@
 - (void)createImageBtn{
     //创建自定义类型button
     UIButton* imgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    imgBtn.frame = CGRectMake(100, 300, 100, 100);
+    imgBtn.frame = CGRectMake(100, 150, 100, 100);
     [imgBtn setImage:[UIImage imageNamed:@"0"] forState:UIControlStateNormal];
     [imgBtn setImage:[UIImage imageNamed:@"1"] forState:UIControlStateHighlighted];
     imgBtn.tag=102;
@@ -179,6 +185,57 @@
     //设置自动换行，label行数，默认为1行。 设置为0的话，会自动计算，自适应展示
     fist.numberOfLines = 2;
     [self.view addSubview:fist];
+}
+
+- (void) createSwitch{
+    _mySwitch = [[UISwitch alloc]init];
+    _mySwitch.frame = CGRectMake(100, 250, 30, 30);
+    //_mySwitch.on = YES;
+    [_mySwitch setOn:YES animated:YES];
+    //设置开启时的背景颜色
+    [_mySwitch setOnTintColor:[UIColor orangeColor]];
+    //设置园按钮的颜色
+    //[_mySwitch setThumbTintColor:[UIColor orangeColor]];
+    [_mySwitch addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:_mySwitch];
+}
+
+- (void) valueChanged:(UISwitch*) sw{
+    if (sw.on) {
+        NSLog(@"开关被打开");
+    }else{
+        NSLog(@"开关被关闭");
+    }
+}
+
+- (void) createProgress{
+    _myProgress = [[UIProgressView alloc]init];
+    _myProgress.frame = CGRectMake(10, 300, 300, 0);
+    [_myProgress setTintColor:[UIColor orangeColor]];
+    //设置未完成部分的颜色
+    [_myProgress setTrackTintColor:[UIColor purpleColor]];
+    [_myProgress setProgress:0.8];
+    _myProgress.progressViewStyle = UIProgressViewStyleDefault;
+    [self.view addSubview:_myProgress];
+}
+
+-(void) createSlider{
+    _slider = [[UISlider alloc]init];
+    _slider.frame = CGRectMake(10, 320, 300, 30);
+    //设置滑动条的最大最小值，可以设置为负值
+    _slider.maximumValue = 100;
+    _slider.minimumValue = 0;
+    _slider.value = 30;
+    //左侧滑条颜色
+    _slider.minimumTrackTintColor = [UIColor orangeColor];
+    //滑块的颜色
+    _slider.thumbTintColor = [UIColor orangeColor];
+    [_slider addTarget:self action:@selector(sValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:_slider];
+}
+
+-(void) sValueChanged:(UISlider*) sl{
+    NSLog(@"slider value is %f", sl.value);
 }
 
 //当系统内存过低时，调用此函数，释放内存
