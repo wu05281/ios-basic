@@ -19,6 +19,10 @@
 @synthesize mySwitch = _mySwitch;
 @synthesize myProgress = _myProgress;
 @synthesize slider = _slider;
+@synthesize stepper = _stepper;
+@synthesize segmentedControl = _segmentedControl;
+@synthesize alert = _alert;
+@synthesize activityIndicator =_activityIndicator;
 
 //当屏幕被点击是调用此函数
 //- (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
@@ -41,6 +45,9 @@
     [self createSwitch];
     [self createProgress];
     [self createSlider];
+    [self createStepper];
+    [self createSegControl];
+    [self createAlertAndActiv];
     //[self createUIView];
     //[self viewCengji];
     // Do any additional setup after loading the view, typically from a nib.
@@ -219,7 +226,7 @@
     [self.view addSubview:_myProgress];
 }
 
--(void) createSlider{
+- (void) createSlider{
     _slider = [[UISlider alloc]init];
     _slider.frame = CGRectMake(10, 320, 300, 30);
     //设置滑动条的最大最小值，可以设置为负值
@@ -230,12 +237,92 @@
     _slider.minimumTrackTintColor = [UIColor orangeColor];
     //滑块的颜色
     _slider.thumbTintColor = [UIColor orangeColor];
-    [_slider addTarget:self action:@selector(sValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [_slider addTarget:self action:@selector(pressSlider:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_slider];
 }
 
--(void) sValueChanged:(UISlider*) sl{
+-(void) pressSlider:(UISlider*) sl{
     NSLog(@"slider value is %f", sl.value);
+}
+
+- (void) createStepper{
+    _stepper = [[UIStepper alloc]init];
+    _stepper.frame = CGRectMake(120, 360, 300, 30);
+    _stepper.tintColor = [UIColor orangeColor];
+    _stepper.minimumValue = 0;
+    _stepper.maximumValue = 100;
+    _stepper.value = 10;
+    //设置步进值
+    _stepper.stepValue = 5;
+    //是否响应重复事件操作：按住+，—的时候自动持续加减。为no的时候放开+-一次处理一次。
+    _stepper.autorepeat = YES;
+    //是否将步进结果通过事件函数响应出来：autorepeat设为yes的时候，才有效；yes的时候按住，反复调用事件函数。
+    _stepper.continuous = YES;
+    [_stepper addTarget:self action:@selector(slideStepper) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:_stepper];
+}
+
+- (void) slideStepper{
+    NSLog(@"步进器");
+}
+
+- (void) createSegControl{
+    _segmentedControl = [[UISegmentedControl alloc]init];
+    _segmentedControl.frame = CGRectMake(10, 400, 300, 30);
+    _segmentedControl.tintColor = [UIColor orangeColor];
+    [_segmentedControl insertSegmentWithTitle:@"0元" atIndex:0 animated:NO];
+    [_segmentedControl insertSegmentWithTitle:@"5元" atIndex:1 animated:NO];
+    [_segmentedControl insertSegmentWithTitle:@"25元" atIndex:2 animated:NO];
+    _segmentedControl.selectedSegmentIndex = 1;
+    [_segmentedControl addTarget:self action:@selector(segChanged) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:_segmentedControl];
+}
+
+- (void) segChanged{
+    NSLog(@" %ld", _segmentedControl.selectedSegmentIndex);
+}
+
+
+- (void) createAlertAndActiv{
+    for(int i=0; i<2;i++) {
+        UIButton* btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        btn.frame = CGRectMake(10 + 90*i, 450, 80, 40);
+        if (i == 0){
+            [btn setTitle:@"警告提示" forState:UIControlStateNormal];
+        } else {
+            [btn setTitle:@"等待对话框" forState:UIControlStateNormal];
+        }
+        btn.tag = 101 + i;
+        [btn addTarget:self action:@selector(alertBtn:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:btn];
+    }
+}
+
+- (void) alertBtn:(UIButton*) btn{
+    if (btn.tag == 101) {
+        _alert = [[UIAlertView alloc]initWithTitle:@"警告" message:@"确认保存" delegate:self cancelButtonTitle:@"确认" otherButtonTitles:@"取消", @"联系客服", nil];
+        [_alert show];
+    } else {
+        _activityIndicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(100, 300, 80, 80)];
+       //设定提示风格
+        _activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+        [self.view addSubview:_activityIndicator];
+        [_activityIndicator startAnimating];
+        //停止等待指示器
+        //[_activityIndicator stopAnimating];
+    }
+}
+//当点击对话框按钮时，调用此函数,参数1：按钮对象本书；参数2按钮索引
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+}
+//对话框即将消失
+- (void) alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex{
+    
+}
+//对话框已经消失
+- (void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    
 }
 
 //当系统内存过低时，调用此函数，释放内存

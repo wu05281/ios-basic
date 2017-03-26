@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController<UIAlertViewDelegate>
 {
     //定时器
     NSTimer* _timerView;
@@ -18,11 +18,24 @@
     UIProgressView* _myProgress;
     //滑动条，调整音量大小
     UISlider* _slider;
+    //按照某个数值阶段性调整数据大小
+    UIStepper* _stepper;
+    //分栏控制器
+    UISegmentedControl* _segmentedControl;
+    
+    //警告对话框
+    UIAlertView* _alert;
+    //等待提示，一般下载，加载比较大的文件时显示此控件
+    UIActivityIndicatorView* _activityIndicator;
 }
 @property(retain,nonatomic) NSTimer* timerView;
 @property(retain,nonatomic) UISwitch* mySwitch;
 @property(retain,nonatomic) UIProgressView* myProgress;
-@property(retain,nonatomic)UISlider* slider;
+@property(retain,nonatomic) UISlider* slider;
+@property(retain,nonatomic) UIStepper* stepper;
+@property(retain,nonatomic) UISegmentedControl* segmentedControl;
+@property(retain,nonatomic) UIAlertView* alert;
+@property(retain,nonatomic)UIActivityIndicatorView* activityIndicator;
 
 @end
 
