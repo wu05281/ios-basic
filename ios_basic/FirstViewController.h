@@ -9,8 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface FirstViewController : UIViewController
-{
-    NSTimer* _timerView;
-}
-@property(retain,nonatomic) NSTimer* timerView;
+
 @end

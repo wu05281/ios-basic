@@ -15,14 +15,16 @@
 
 @implementation ViewController
 
+@synthesize timerView = _timerView;
+
 //当屏幕被点击是调用此函数
-- (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+//- (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     //创建转向的视图控制器
-    FirstViewController* myFirstVc = [[FirstViewController alloc]init];
+//    FirstViewController* myFirstVc = [[FirstViewController alloc]init];
     //显示一个新的视图控制器
     //参数1：新对象，参数2:是否使用动画切换效果，参数3:切换结束后，功能调用
-    [self presentViewController:myFirstVc animated:YES completion:nil];
-}
+//    [self presentViewController:myFirstVc animated:YES completion:nil];
+//}
 
 //第一次被加载时使用，用来初始化资源来用
 - (void)viewDidLoad {
@@ -31,10 +33,10 @@
     NSLog(@"这是我的第一个ios项目");
     //self.view.backgroundColor = [UIColor grayColor];
     //[self creatUI];
-    //[self createRectBtn];
-    //[self createImageBtn];
+    [self createRectBtn];
+    [self createImageBtn];
     //[self createUIView];
-    [self viewCengji];
+    //[self viewCengji];
     // Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -115,7 +117,7 @@
     //设置按钮坐标
     btn.frame = CGRectMake(100, 200, 160, 40);
     //设置按钮内容
-    [btn setTitle:@"按钮" forState:UIControlStateNormal];
+    [btn setTitle:@"启动定时器" forState:UIControlStateNormal];
     //选中状态时按钮内容
     [btn setTitle:@"按下" forState:UIControlStateHighlighted];
     //设置背景色
@@ -134,19 +136,28 @@
 }
 
 - (void)pressBtn:(UIButton*) btn{
+    
     if (btn.tag == 101) {
+        FirstViewController* myFirstVc = [[FirstViewController alloc]init];
+        [self presentViewController:myFirstVc animated:YES completion:nil];
+        _timerView = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateTimer) userInfo:nil repeats:YES];
         NSLog(@"文字按钮被按下了。");
     } else {
+        [_timerView invalidate];
         NSLog(@"图片按钮被按下了。");
     }
+}
+
+- (void) updateTimer{
+    NSLog(@"启动了一个定时器");
 }
 
 - (void)createImageBtn{
     //创建自定义类型button
     UIButton* imgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     imgBtn.frame = CGRectMake(100, 300, 100, 100);
-    [imgBtn setImage:[UIImage imageNamed:@"btn01"] forState:UIControlStateNormal];
-    [imgBtn setImage:[UIImage imageNamed:@"btn02"] forState:UIControlStateHighlighted];
+    [imgBtn setImage:[UIImage imageNamed:@"0"] forState:UIControlStateNormal];
+    [imgBtn setImage:[UIImage imageNamed:@"1"] forState:UIControlStateHighlighted];
     imgBtn.tag=102;
     [imgBtn addTarget:self action:@selector(pressBtn:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:imgBtn];
@@ -163,7 +174,7 @@
     fist.frame = CGRectMake(100, 100, 200, 40);
     //文字大小
     fist.font = [UIFont systemFontOfSize:24];
-    //对其方式
+    //对齐方式
     fist.textAlignment = NSTextAlignmentCenter;
     //设置自动换行，label行数，默认为1行。 设置为0的话，会自动计算，自适应展示
     fist.numberOfLines = 2;

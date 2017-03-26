@@ -14,8 +14,6 @@
 
 @implementation FirstViewController
 
-@synthesize timerView = _timerView;
-
 //touch事件
 - (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     //使当前控制器消失

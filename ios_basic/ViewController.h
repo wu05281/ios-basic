@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface ViewController : UIViewController
-
+{
+    NSTimer* _timerView;
+}
+@property(retain,nonatomic) NSTimer* timerView;
 
 @end
 
