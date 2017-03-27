@@ -23,6 +23,7 @@
 @synthesize segmentedControl = _segmentedControl;
 @synthesize alert = _alert;
 @synthesize activityIndicator =_activityIndicator;
+@synthesize userName = _userName;
 
 //当屏幕被点击是调用此函数
 //- (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
@@ -48,6 +49,7 @@
     [self createStepper];
     [self createSegControl];
     [self createAlertAndActiv];
+    [self createTextField];
     //[self createUIView];
     //[self viewCengji];
     // Do any additional setup after loading the view, typically from a nib.
@@ -312,7 +314,7 @@
         //[_activityIndicator stopAnimating];
     }
 }
-//当点击对话框按钮时，调用此函数,参数1：按钮对象本书；参数2按钮索引
+//当点击对话框按钮时，调用此函数,参数1：按钮对象本身；参数2按钮索引
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
 }
@@ -323,6 +325,47 @@
 //对话框已经消失
 - (void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
     
+}
+
+- (void) createTextField{
+    _userName = [[UITextField alloc]init];
+    _userName.frame = CGRectMake(10, 30, 300, 40);
+    _userName.font = [UIFont systemFontOfSize : 15];
+    //_userName.text = @"用户名";
+    //设置字体颜色
+    self.userName.textColor = [UIColor blackColor];
+    self.userName.borderStyle = UITextBorderStyleRoundedRect;
+    //设置虚拟键盘模式
+    self.userName.keyboardType = UIKeyboardTypeAlphabet;
+    //浅灰色提示输入文字
+    self.userName.placeholder = @"请输入用户名。。。";
+    //是否作为密码输入
+    self.userName.secureTextEntry = NO;
+    [self.view addSubview:_userName];
+    //设置代理对象
+    self.userName.delegate = self;
+    
+}
+
+//点击空白处回收键盘
+- (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [self.userName resignFirstResponder];
+}
+- (void) textFieldDidBeginEditing:(UITextField *)textField {
+    NSLog(@"开始输入。。。");
+}
+- (void) textFieldDidEndEditing:(UITextField *)textField {
+    NSLog(@"结束输入。。。");
+}
+
+//是否可以进行输入,返回（默认返回yes）yes可以输入，no的话不能输入
+- (BOOL) textFieldShouldBeginEditing:(UITextField *)textField{
+    return YES;
+}
+
+//是否可以结束输入，默认为yes可以结束输入键盘回收，比如8位密码场景
+- (BOOL) textFieldShouldEndEditing:(UITextField *)textField{
+    return YES;
 }
 
 //当系统内存过低时，调用此函数，释放内存
