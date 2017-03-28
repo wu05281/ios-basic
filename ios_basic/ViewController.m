@@ -39,20 +39,20 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     NSLog(@"这是我的第一个ios项目");
-    //self.view.backgroundColor = [UIColor grayColor];
-    //[self creatUI];
-    [self createRectBtn];
-    [self createImageBtn];
-    [self createSwitch];
-    [self createProgress];
-    [self createSlider];
-    [self createStepper];
-    [self createSegControl];
-    [self createAlertAndActiv];
-    [self createTextField];
-    //[self createUIView];
-    //[self viewCengji];
-    // Do any additional setup after loading the view, typically from a nib.
+//    self.view.backgroundColor = [UIColor grayColor];
+//    [self creatUI];
+//    [self createRectBtn];
+//    [self createImageBtn];
+//    [self createSwitch];
+//    [self createProgress];
+//    [self createSlider];
+//    [self createStepper];
+//    [self createSegControl];
+//    [self createAlertAndActiv];
+//    [self createTextField];
+//    [self createUIView];
+//    [self viewCengji];
+    [self creatScrollView];
 }
 
 //当视图即将展示时，调用此函数
@@ -368,9 +368,43 @@
     return YES;
 }
 
+
+//创建滚动视图
+- (void) creatScrollView{
+    UIScrollView* sv = [[UIScrollView alloc]init];
+    sv.frame = CGRectMake(0, 0, 320, 576);
+    //滚动停留的位置，设置为no的话可能停在图片中间任意位置。
+    sv.pagingEnabled = YES;
+    sv.scrollEnabled = YES;
+    sv.contentSize =CGSizeMake(320*5, 576);
+    //设置边缘弹动效果
+    sv.bounces = YES;
+    //设置横向弹动效果
+    sv.alwaysBounceHorizontal = YES;
+    //设置纵向弹动效果
+    sv.alwaysBounceVertical = YES;
+    //设置横向滚动条显示
+    sv.showsHorizontalScrollIndicator = YES;
+    //设置纵向滚动条显示
+    sv.showsVerticalScrollIndicator = YES;
+    //
+    sv.backgroundColor = [UIColor orangeColor];
+    
+    for (int i = 0; i <2; i++) {
+        NSString* imName = [NSString stringWithFormat:@"d%d", i+1];
+        NSLog(@"%@",imName);
+        UIImage* im = [UIImage imageNamed:imName];
+        UIImageView* imv = [[UIImageView alloc]initWithImage:im];
+        imv.frame = CGRectMake(320*i, 0, 320, 576);
+        [sv addSubview:imv];
+        
+    }
+    
+    [self.view addSubview:sv];
+    
+}
+
 //当系统内存过低时，调用此函数，释放内存
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
