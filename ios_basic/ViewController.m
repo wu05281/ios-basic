@@ -24,6 +24,7 @@
 @synthesize alert = _alert;
 @synthesize activityIndicator =_activityIndicator;
 @synthesize userName = _userName;
+@synthesize scrollView = _scrollView;
 
 //当屏幕被点击是调用此函数
 //- (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
@@ -52,7 +53,8 @@
 //    [self createTextField];
 //    [self createUIView];
 //    [self viewCengji];
-    [self creatScrollView];
+//    [self creatScrollView];
+    [self createScrollViewSenior];
 }
 
 //当视图即将展示时，调用此函数
@@ -314,6 +316,8 @@
         //[_activityIndicator stopAnimating];
     }
 }
+
+//UIAlertView的协议函数
 //当点击对话框按钮时，调用此函数,参数1：按钮对象本身；参数2按钮索引
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
@@ -347,10 +351,23 @@
     
 }
 
-//点击空白处回收键盘
+//点击空白处回收键盘,画布重新定位等
 - (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    [self.userName resignFirstResponder];
+    //[self.userName resignFirstResponder];
+    //让视图滚动到指定位置，带动画效果。
+    //[_scrollView scrollRectToVisible:CGRectMake(0, 0, 300, 400) animated:YES];
+    //获取点击次数
+    UITouch* touch = [touches anyObject];
+    if (touch.tapCount == 1) {
+        NSLog(@"单次点击！");
+    }
+    
 }
+//特殊情况下调用，玩游戏时候来电话时候调用，用来紧急处理。
+-(void) touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    
+}
+//UITextField的协议函数
 - (void) textFieldDidBeginEditing:(UITextField *)textField {
     NSLog(@"开始输入。。。");
 }
@@ -369,7 +386,7 @@
 }
 
 
-//创建滚动视图
+//创建滚动视图(左右)
 - (void) creatScrollView{
     UIScrollView* sv = [[UIScrollView alloc]init];
     sv.frame = CGRectMake(0, 0, 320, 576);
@@ -401,6 +418,53 @@
     }
     
     [self.view addSubview:sv];
+    
+}
+//创建高级滚动视图
+- (void)createScrollViewSenior {
+    _scrollView = [[UIScrollView alloc]init];
+    _scrollView.frame = CGRectMake(10, 50, 300, 400);
+    //取消弹动效果
+    _scrollView.bounces = NO;
+    //是否允许通过点击屏幕来滚动视图，yes可以接受触屏事件.
+    _scrollView.userInteractionEnabled = YES;
+    //设置画布大小
+    _scrollView.contentSize = CGSizeMake(300, 400*2);
+    for (int i = 0; i <2; i++) {
+        NSString* imName = [NSString stringWithFormat:@"d%d", i+1];
+        NSLog(@"%@",imName);
+        UIImage* im = [UIImage imageNamed:imName];
+        UIImageView* imv = [[UIImageView alloc]initWithImage:im];
+        //设置每一屏在画布中的位置
+        imv.frame = CGRectMake(0, 400*i, 300, 400);
+        [_scrollView addSubview:imv];
+        //
+        
+    }
+    //取消按页滚动,no可以停留在任意位置
+    _scrollView.pagingEnabled = NO;
+    //
+    _scrollView.contentOffset = CGPointMake(0, 0);
+    [self.view addSubview:_scrollView];
+    //将当前视图控制器作为_scrollView的代理对象。
+    _scrollView.delegate = self;
+    
+}
+//当视图发送坐标移动时候调用此函数
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView{
+    NSLog(@"y = %f", scrollView.contentOffset.y);
+}
+//视图结束拖动时被调用，手指松开
+- (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    
+}
+//视图开始被手指拖动时被调用
+- (void) scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    
+}
+
+//即将开始减速
+- (void) scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
     
 }
 

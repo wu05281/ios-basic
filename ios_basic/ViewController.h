@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController<UIAlertViewDelegate, UITextFieldDelegate>
+@interface ViewController : UIViewController<UIAlertViewDelegate, UITextFieldDelegate, UIScrollViewDelegate>
 {
     //定时器
     NSTimer* _timerView;
@@ -29,6 +29,8 @@
     UIActivityIndicatorView* _activityIndicator;
     //用户文本输入区域，只能输入单行文本
     UITextField* _userName;
+    //定义滚动视图
+    UIScrollView* _scrollView;
 }
 @property(retain,nonatomic) NSTimer* timerView;
 @property(retain,nonatomic) UISwitch* mySwitch;
@@ -39,6 +41,7 @@
 @property(retain,nonatomic) UIAlertView* alert;
 @property(retain,nonatomic) UIActivityIndicatorView* activityIndicator;
 @property(retain,nonatomic) UITextField* userName;
+@property(retain,nonatomic) UIScrollView* scrollView;
 
 @end
 
