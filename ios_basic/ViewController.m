@@ -54,7 +54,8 @@
 //    [self createUIView];
 //    [self viewCengji];
 //    [self creatScrollView];
-    [self createScrollViewSenior];
+//    [self createScrollViewSenior];
+    [self createImageView];
 }
 
 //当视图即将展示时，调用此函数
@@ -467,6 +468,67 @@
 - (void) scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
     
 }
+
+
+- (void) createImageView{
+    UIImage *image = [UIImage imageNamed:@"d1"];
+    _imageView = [[UIImageView alloc] init];
+    _imageView.image = image;
+    _imageView.frame = CGRectMake(30, 50, 200, 300);
+    [self.view addSubview:_imageView];
+    _imageView.userInteractionEnabled =YES;
+    //创建点击手势对象，用来识别点击手势事件
+    UITapGestureRecognizer* uitap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapOneAct:)];
+    //几次点击时触发，默认为1，点击一次触发
+    uitap.numberOfTapsRequired = 1;
+    //几个手指点击触发，默认为1，一个手指点击触发
+    uitap.numberOfTouchesRequired = 1;
+    //将点击事件添加至视图中，视图即可响应事件
+    [_imageView addGestureRecognizer:uitap];
+    
+    
+    //创建点击手势对象，用来识别点击手势事件
+    UITapGestureRecognizer* uitapTwo = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapTwoAct:)];
+    //几次点击时触发，默认为2，点击2次触发
+    uitapTwo.numberOfTapsRequired = 2;
+    //几个手指点击触发，默认为1，一个手指点击触发
+    uitapTwo.numberOfTouchesRequired = 1;
+    //将点击事件添加至视图中，视图即可响应事件
+    [_imageView addGestureRecognizer:uitapTwo];
+    //当单击事件遇到双击事件时，单击操作失效。
+    [uitap requireGestureRecognizerToFail:uitapTwo];
+}
+
+- (void) tapOneAct:(UITapGestureRecognizer*)tap{
+    NSLog(@"单击操作");
+    //获取手势对应的视图
+    UIImageView* view = (UIImageView*)tap.view;
+    //设置开启动画
+    [UIView beginAnimations:nil context:nil];
+    //动画时间
+    [UIView setAnimationDuration:2];
+    
+    view.frame = CGRectMake(0, 0, 320, 568);
+    //结束动画
+    [UIView commitAnimations];
+    
+}
+
+- (void) tapTwoAct:(UITapGestureRecognizer*)tap{
+    NSLog(@"双击操作");
+    //获取手势对应的视图
+    UIImageView* view = (UIImageView*)tap.view;
+    //设置开启动画
+    [UIView beginAnimations:nil context:nil];
+    //动画时间
+    [UIView setAnimationDuration:2];
+    
+    view.frame = CGRectMake(30, 50, 200, 300);
+    //结束动画
+    [UIView commitAnimations];
+    
+}
+
 
 //当系统内存过低时，调用此函数，释放内存
 - (void)didReceiveMemoryWarning {

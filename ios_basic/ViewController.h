@@ -31,6 +31,8 @@
     UITextField* _userName;
     //定义滚动视图
     UIScrollView* _scrollView;
+    //定义图像视图
+    UIImageView* _imageView;
 }
 @property(retain,nonatomic) NSTimer* timerView;
 @property(retain,nonatomic) UISwitch* mySwitch;
