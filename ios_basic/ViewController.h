@@ -4,11 +4,12 @@
 //
 //  Created by wubo on 2017/3/26.
 //  Copyright © 2017年 wubo. All rights reserved.
+//  UIGestureRecognizerDelegate 允许多个手势同时操作的协议函数
 //
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController<UIAlertViewDelegate, UITextFieldDelegate, UIScrollViewDelegate>
+@interface ViewController : UIViewController<UIAlertViewDelegate, UITextFieldDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate>
 {
     //定时器
     NSTimer* _timerView;
@@ -33,6 +34,10 @@
     UIScrollView* _scrollView;
     //定义图像视图
     UIImageView* _imageView;
+    //定义一个缩放(捏合)手势，对视图进行放大缩小
+    UIPinchGestureRecognizer* _pinchGes;
+    //定义一个旋转手势，
+    UIRotationGestureRecognizer* _rotationGes;
 }
 @property(retain,nonatomic) NSTimer* timerView;
 @property(retain,nonatomic) UISwitch* mySwitch;

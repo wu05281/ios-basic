@@ -55,7 +55,8 @@
 //    [self viewCengji];
 //    [self creatScrollView];
 //    [self createScrollViewSenior];
-    [self createImageView];
+//    [self createImageView];
+    [self createImageView4Pinch];
 }
 
 //当视图即将展示时，调用此函数
@@ -529,7 +530,46 @@
     
 }
 
+- (void) createImageView4Pinch{
+    UIImage *image = [UIImage imageNamed:@"d1"];
+    _imageView = [[UIImageView alloc] init];
+    _imageView.image = image;
+    _imageView.frame = CGRectMake(30, 50, 200, 300);
+    //开启交互功能
+    _imageView.userInteractionEnabled =YES;
+    [self.view addSubview:_imageView];
+    //创建缩放手势
+    _pinchGes = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchAct:)];
+    //创建旋转手势
+    _rotationGes = [[UIRotationGestureRecognizer alloc]initWithTarget:self action:@selector(rotaAct:)];
+    //将手势添加至视图中
+    [_imageView addGestureRecognizer:_pinchGes];
+    [_imageView addGestureRecognizer:_rotationGes];
+    
+    _pinchGes.delegate = self;
+    _rotationGes.delegate = self;
+}
 
+- (void) pinchAct:(UIPinchGestureRecognizer*) pinch {
+    UIImageView* iv = (UIImageView*)pinch.view;
+    //对图像视图对象进行矩阵变换计算并赋值
+    //CGAffineTransformScale：通过缩放方式 在原来的矩阵基础上，对x，y两个方向进行变换，产生新的矩阵。
+    iv.transform = CGAffineTransformScale(iv.transform, pinch.scale, pinch.scale);
+    //缩放值归位，否则会产生累加
+    pinch.scale = 1;
+}
+
+- (void) rotaAct:(UIRotationGestureRecognizer*)rota{
+    UIImageView* iv = (UIImageView*)rota.view;
+    iv.transform = CGAffineTransformRotate(iv.transform, rota.rotation);
+    //旋转角度清零
+    rota.rotation = 0;
+}
+
+//是否可以同时响应两个手势
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+    return YES;
+}
 //当系统内存过低时，调用此函数，释放内存
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
